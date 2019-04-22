@@ -1,3 +1,7 @@
 
-d = {}  # create an empty dictionary
-l
+alist = []
+middleindex = 0
+alist.insert(middleindex, "Bo")
+
+
+print(alist)
