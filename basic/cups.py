@@ -1,7 +1,6 @@
 def sortCupsByRadius(elem):
     return elem[1] # returns radius of cup
 
-
 N = int(input())
 
 listOfCups = []
