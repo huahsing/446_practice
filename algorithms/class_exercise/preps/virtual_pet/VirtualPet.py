@@ -1,33 +1,39 @@
 import Pet
 import threading
+import _thread
 import time
 
 class VirtualPet:
     # private methods
-    def __choosePet(self):
+    def _choosePet(self):
         petType = input("What type of pet would you like? ")
         return petType
 
-    def __enterPetName(self, petType):
+    def _enterPetName(self, petType):
         petName = input("What would you like to name your " + petType + "? ")
         return petName
 
-    def __timer(self, secondsPerTick):
+    def _timer(self, secondsPerTick):
         while True:
             # do these in a game tick
-            print(self.__pet.getPetName() + "'s stats are")
-            print("Hunger: {}%".format(self.__pet.getHunger()))
-            print("Bored: {}%".format(self.__pet.getBored()))
-            print("Intelligence: {}".format(self.__pet.getIntelligence()))
-            print("What would you like to do with your pet? (P)lay, (R)ead or (F)eed? [(Q)uit game]")
+            print(self._pet.getPetName() + "'s stats are")
+            print("Hunger: {}%".format(self._pet.getHunger()))
+            print("Bored: {}%".format(self._pet.getBored()))
+            print("Intelligence: {}".format(self._pet.getIntelligence()))
+            print("What would you like to do with your pet? (P)lay, (R)ead or (F)eed? [(Q)uit game]\n")
             time.sleep(secondsPerTick)
-            self.__pet.advanceGameTick()
+            self._pet.advanceGameTick()
+            if not self._pet.isAlive():
+                break
+        print("Sorry, {} has died from {}".format(self._pet.getPetName(), self._getCauseOfDeath()))
+        print("Press 'Enter'...")
+        _thread.interrupt_main()
 
-    def __getCauseOfDeath(self):
+    def _getCauseOfDeath(self):
         cause = ""
-        if self.__pet.getHunger() == 100:
+        if self._pet.getHunger() == 100:
             cause = "starvation"
-        if self.__pet.getBored() == 100:
+        if self._pet.getBored() == 100:
             if cause != "":
                 cause = cause + " and " + "boredom"
             else:
@@ -36,30 +42,30 @@ class VirtualPet:
 
     # public methods
     def startGame(self):
-        petType = self.__choosePet()
-        petName = self.__enterPetName(petType)
+        petType = self._choosePet()
+        petName = self._enterPetName(petType)
         if str.lower(petType) == "tiger":
-            self.__pet = Pet.Tiger(petName, petType)
+            self._pet = Pet.Tiger(petName, petType)
         else:
-            self.__pet = Pet.Pet(petName, petType)
-        self.__pet.outputGreeting()
+            self._pet = Pet.Pet(petName, petType)
+        self._pet.outputGreeting()
 
     def playGame(self):    
         choice = ""
-        gameTickThread = threading.Thread(target=self.__timer, args=(1, ))
+        gameTickThread = threading.Thread(target=self._timer, args=(5, ))
         gameTickThread.daemon = True
         gameTickThread.start()
         while choice != "q":
-            choice = str.lower(input())
-            if not self.__pet.isAlive():
-                print("Sorry, {} has died from {}".format(self.__pet.getPetName(), self.__getCauseOfDeath()))
+            try:
+                choice = str.lower(input())
+            except KeyboardInterrupt:                
                 break
             if choice == "p":
-                self.__pet.play()
+                self._pet.play()
             elif choice == "f":
-                self.__pet.feed()
+                self._pet.feed()
             elif choice == "r":
-                self.__pet.read()
+                self._pet.read()
         print("Quitting game, thanks for playing!")
 
 if __name__ == "__main__":

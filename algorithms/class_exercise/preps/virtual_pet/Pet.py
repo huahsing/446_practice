@@ -1,62 +1,59 @@
 class Pet:
     def __init__(self, petName, petType):
-        self.__petName = petName
-        self.__hunger = 0
-        self.__bored = 0
-        self.__intelligence = 0
-        self.__type = petType
-
-    def __init__(self, petName, petType, hunger, bored, intelligence):
-        self.__petName = petName
-        self.__hunger = hunger
-        self.__bored = bored
-        self.__intelligence = intelligence
-        self.__type = petType
+        self._petName = petName
+        self._type = petType
+        self._hunger = 0
+        self._bored = 0
+        self._intelligence = 0
 
     def getPetName(self):
-        return self.__petName
+        return self._petName
 
     def getPetType(self):
-        return self.__type
+        return self._type
 
     def getHunger(self):
-        return self.__hunger
+        return self._hunger
 
     def getBored(self):
-        return self.__bored
+        return self._bored
 
     def getIntelligence(self):
-        return self.__intelligence
+        return self._intelligence
 
     def feed(self):
-        self.__hunger = 0
-        print("{}'s hunger is now {}%".format(self.getPetName(), self.getHunger()))
+        self._hunger = 0
+        print("{}'s hunger is now {}%".format(self._petName, self._hunger))
     
     def play(self):
-        self.__bored = 0
-        print("{}'s bored is now {}%".format(self.getPetName(), self.getBored()))
+        self._bored = 0
+        print("{}'s bored is now {}%".format(self._petName, self._bored))
 
     def read(self):
-        self.__intelligence = self.__intelligence * 1.006
-        print("{}'s intelligence is now {}".format(self.getPetName(), self.getIntelligence()))
+        if self._intelligence < 150:
+            self._intelligence = self._intelligence * 1.006
+        print("{}'s intelligence is now {}".format(self._petName, self._intelligence))
 
     def advanceGameTick(self):
-        self.__bored = self.__bored + 1
-        self.__hunger = self.__hunger + 1
+        self._bored = self._bored + 1
+        self._hunger = self._hunger + 1
 
     def isAlive(self):
-        if self.__bored == 100 or self.__hunger == 100:
+        if self._bored == 100 or self._hunger == 100:
             return False
         else:
             return True
         
     def outputGreeting(self):
-        print("Hello, I'm {}, I'm a {}".format(self.getPetName(), self.getPetType()))
+        print("Hello, I'm {}, I'm a {}".format(self._petName, self._type))
 
 
 class Tiger(Pet):
     def __init__(self, petName, petType):
-        super().__init__(petName, petType, 50, 10, 10)
+        super().__init__(petName, petType)
+        self._hunger = 50
+        self._bored = 10
+        self._intelligence = 10
 
     def outputGreeting(self):
         super().outputGreeting()
