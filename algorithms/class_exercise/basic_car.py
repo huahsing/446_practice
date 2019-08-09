@@ -25,18 +25,18 @@ class Car:
         print("SPECS: colour={0}, brand={1}, licenseNo={2}, maxSpeed={3}".format(self.Colour, self.Brand, self.LicenseNum, self.MaxSpeed))
     
 
-
+if __name__ == "__main__":
     # test function
-c1 = Car("red", "BMW", "ZX1234")
-c1.PrintSpecs()
+    c1 = Car("red", "BMW", "ZX1234")
+    c1.PrintSpecs()
 
-accelerateCount = random.randint(1, 30)
+    accelerateCount = random.randint(1, 30)
+    
+    for i in range(accelerateCount):
+        c1.Accelerate()
 
-for i in range(accelerateCount):
-    c1.Accelerate()
-
-print("Current c1 speed =", c1.GetSpeed())
-c1.SetColour("black")
-c1.PrintSpecs()
+    print("Current c1 speed =", c1.GetSpeed())
+    c1.SetColour("black")
+    c1.PrintSpecs()
 
     
